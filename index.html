@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMIGO SECRETO — Maxmela and the Pistoinar &amp; Six Seven Edition</title>
+<style>
+:root{
+  --xbox:#107C10;
+  --xbox-light:#9BF00B;
+  --gold:#ffd166;
+  --fire:#ff7a00;
+  --pink:#ff4d94;
+  --violet:#9d6bff;
+  --mint:#4ee6c1;
+  --sky:#79c7ff;
+  --text:#f6f0ff;
+  --muted:#c3b4e6;
+  --radius:20px;
+  --shadow:0 18px 40px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  color:var(--text);
+  background:linear-gradient(#0d0619,#1b1035 30%,#12203f);
+  min-height:100vh;overflow-x:hidden;
+}
+canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:900}
+
+/* ══════════ PORTADA ESTILO CONSOLA ══════════ */
+.cover{
+  position:relative;margin:14px 14px 0;border-radius:18px;overflow:hidden;
+  background:
+    radial-gradient(700px 400px at 75% 10%, #ff9d0055, transparent 60%),
+    radial-gradient(600px 500px at 10% 90%, #ff2e6355, transparent 60%),
+    radial-gradient(500px 400px at 50% 50%, #7a1fd644, transparent 70%),
+    linear-gradient(160deg,#160a05,#2a0f04 45%,#0b0716);
+  border:3px solid #000;
+  box-shadow:0 24px 60px #000c, inset 0 0 90px #ff7a0033;
+  animation:coverIn .8s cubic-bezier(.2,.9,.3,1.25) both;
+}
+@keyframes coverIn{from{opacity:0;transform:translateY(-40px) scale(.96)}to{opacity:1;transform:none}}
+
+/* lomo lateral */
+.spine{
+  position:absolute;left:0;top:0;bottom:0;width:56px;background:#f2f2f2;
+  display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+  padding:14px 0;z-index:6;border-right:3px solid #000;
+}
+.spine .logo{
+  width:34px;height:34px;border-radius:50%;background:var(--xbox);
+  display:grid;place-items:center;color:#fff;font-weight:900;font-size:1.1rem;
+  box-shadow:0 3px 0 #0a5a0a;
+}
+.spine .stext{
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  font-weight:900;letter-spacing:3px;color:#111;font-size:.82rem;text-transform:uppercase;
+}
+.spine .badge{width:30px;height:30px;background:var(--xbox);border-radius:6px;display:grid;place-items:center;color:#fff;font-weight:900}
+
+/* haces de luz tipo "rayos láser" */
+.beam{position:absolute;top:-30%;width:8px;height:170%;z-index:2;pointer-events:none;
+  background:linear-gradient(transparent,#fff7c2,#ffb300,transparent);
+  filter:blur(4px);opacity:.75;transform-origin:center;
+  animation:flick 1.4s ease-in-out infinite alternate;}
+.beam.b1{left:30%;transform:rotate(28deg)}
+.beam.b2{left:55%;transform:rotate(-22deg);animation-delay:.3s}
+.beam.b3{left:78%;transform:rotate(16deg);animation-delay:.6s;width:5px}
+@keyframes flick{from{opacity:.35}to{opacity:.95}}
+
+.cover-body{position:relative;z-index:5;padding:26px 26px 30px 84px;min-height:420px}
+
+.ticker{
+  position:absolute;top:0;left:56px;right:0;overflow:hidden;
+  background:linear-gradient(90deg,#000a,#3b0f00e6,#000a);
+  border-bottom:3px solid #ffb300;padding:9px 0;
+}
+.ticker .run{display:inline-block;white-space:nowrap;padding-left:100%;
+  animation:run 16s linear infinite;font-weight:900;letter-spacing:2px;
+  color:#ffcf3d;text-shadow:0 0 12px #ff7a00,0 2px 0 #7a2e00;font-size:1.05rem;text-transform:uppercase;
+}
+@keyframes run{to{transform:translateX(-100%)}}
+
+.mode67{
+  position:absolute;right:24px;top:56px;text-align:center;z-index:7;
+  background:linear-gradient(#1c1104,#000);border:3px solid #ffcf3d;border-radius:10px;
+  padding:8px 16px;box-shadow:0 0 24px #ffb30088;transform:rotate(3deg);
+}
+.mode67 .num{font-size:2.7rem;font-weight:900;line-height:1;color:#fff;
+  text-shadow:0 0 14px #ff7a00,0 0 30px #ff2e63;font-style:italic}
+.mode67 .lbl{font-size:.6rem;letter-spacing:2px;color:#ffcf3d;font-weight:800}
+
+.kicker{margin-top:34px;font-size:.9rem;letter-spacing:4px;color:#ffd8a8;text-transform:uppercase;font-weight:700;opacity:.9}
+.title{
+  font-size:clamp(3rem,9vw,6.4rem);line-height:.92;font-weight:900;font-style:italic;
+  text-transform:uppercase;letter-spacing:-2px;margin-top:4px;
+  background:linear-gradient(#fff6cf 8%,#ffd166 30%,#ff9d00 52%,#ff5e00 68%,#ffd166 92%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 5px 0 #6b2400) drop-shadow(0 0 26px #ff8c00aa);
+}
+.plate{
+  display:inline-block;margin-top:12px;padding:8px 22px;border-radius:8px;
+  font-weight:900;font-style:italic;text-transform:uppercase;letter-spacing:1px;
+  transform:skew(-8deg);border:3px solid #fff2;box-shadow:0 6px 0 #0008, 0 14px 30px #0007;
+}
+.plate span{display:inline-block;transform:skew(8deg)}
+.plate.blue{background:linear-gradient(#4aa8ff,#0b5ed7);font-size:clamp(1.1rem,3vw,1.9rem);
+  color:#fff;text-shadow:0 3px 0 #06306e}
+.plate.orange{background:linear-gradient(#ffb300,#ff5e00);margin-left:10px;
+  font-size:clamp(1rem,2.6vw,1.6rem);color:#2a0f04;text-shadow:0 2px 0 #fff6}
+
+/* mascarillas doradas + emojis decorativos */
+.deco{position:absolute;font-size:2.4rem;z-index:4;filter:drop-shadow(0 6px 10px #000a);
+  animation:floaty 5s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-14px) rotate(6deg)}}
+
+.esrb{
+  position:absolute;left:84px;bottom:24px;z-index:7;background:#fff;color:#000;
+  width:86px;padding:6px;border:2px solid #000;text-align:center;
+}
+.esrb .big{font-size:2.5rem;font-weight:900;line-height:1}
+.esrb .t{font-size:.52rem;font-weight:800;letter-spacing:.5px;border-top:2px solid #000;margin-top:3px;padding-top:2px}
+.esrb .t2{font-size:.44rem;margin-top:2px}
+
+.dev{
+  position:absolute;right:24px;bottom:24px;z-index:7;text-align:right;
+  background:linear-gradient(#2a1c05,#120b02);border:2px solid #ffcf3d;border-radius:8px;
+  padding:8px 14px;box-shadow:0 0 18px #ffb30055;
+}
+.dev small{display:block;font-size:.55rem;letter-spacing:3px;color:#ffd166}
+.dev b{font-size:1rem;letter-spacing:4px;color:#fff}
+.dev i{display:block;font-size:.52rem;color:#c9a227;letter-spacing:2px}
+
+.flame-edge{
+  position:absolute;left:0;right:0;bottom:-6px;height:64px;z-index:8;pointer-events:none;
+  background:
+    radial-gradient(circle at 10% 100%, #ffd166 0 14px, #ff7a00 15px 28px, transparent 30px),
+    radial-gradient(circle at 30% 100%, #ffd166 0 12px, #ff5e00 13px 26px, transparent 28px),
+    radial-gradient(circle at 50% 100%, #fff0b8 0 15px, #ff9d00 16px 30px, transparent 32px),
+    radial-gradient(circle at 70% 100%, #ffd166 0 12px, #ff5e00 13px 26px, transparent 28px),
+    radial-gradient(circle at 90% 100%, #ffd166 0 14px, #ff7a00 15px 28px, transparent 30px);
+  background-size:200px 64px;filter:blur(3px);
+  animation:flame .35s steps(2) infinite alternate;opacity:.95;
+}
+@keyframes flame{from{transform:translateY(2px) scaleY(.94)}to{transform:translateY(-3px) scaleY(1.06)}}
+
+/* ══════════ BARRA DE CONTROLES ══════════ */
+.controls{
+  max-width:1180px;margin:34px auto 0;padding:0 18px;
+  display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;
+}
+button{
+  font-family:inherit;font-weight:900;font-size:.98rem;cursor:pointer;border:none;
+  padding:14px 24px;border-radius:12px;color:#120b02;transition:.18s transform,.18s filter,.18s box-shadow;
+  text-transform:uppercase;letter-spacing:.6px;position:relative;overflow:hidden;
+}
+button:hover{transform:translateY(-4px) scale(1.04);filter:brightness(1.1)}
+button:active{transform:translateY(0) scale(.98)}
+.btn-start{background:linear-gradient(#ffe08a,#ffb300 55%,#ff7a00);color:#2a0f04;
+  box-shadow:0 6px 0 #a85300,0 16px 30px #ff7a0055;font-size:1.1rem;padding:16px 34px}
+.btn-start::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,#fff9 50%,transparent 70%);
+  transform:translateX(-120%);transition:.5s}
+.btn-start:hover::after{transform:translateX(120%)}
+.btn-x{background:linear-gradient(#22c55e,var(--xbox));color:#fff;box-shadow:0 6px 0 #0a5a0a}
+.btn-v{background:linear-gradient(#c084fc,var(--violet));color:#fff;box-shadow:0 6px 0 #5b2b8f}
+.btn-c{background:linear-gradient(#67e8f9,#0ea5e9);color:#06263b;box-shadow:0 6px 0 #0369a1}
+.btn-g{background:#ffffff1a;color:#fff;border:2px solid #ffffff44;box-shadow:none}
+
+.switch{
+  display:flex;align-items:center;gap:9px;font-size:.86rem;font-weight:800;cursor:pointer;
+  color:#ffe08a;background:#0008;border:2px solid #ffb30066;padding:11px 16px;border-radius:12px;user-select:none;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.switch input{accent-color:#ff7a00;width:17px;height:17px;cursor:pointer}
+
+.progress-zone{max-width:640px;margin:20px auto 0;padding:0 18px;text-align:center}
+.bar{height:20px;border-radius:99px;background:#0009;border:2px solid #ffffff33;overflow:hidden;box-shadow:inset 0 3px 8px #000a}
+.bar span{display:block;height:100%;width:0;border-radius:99px;
+  background:repeating-linear-gradient(45deg,#ffd166 0 14px,#ff9d00 14px 28px);
+  transition:width .55s cubic-bezier(.2,.9,.3,1.3);box-shadow:0 0 18px #ffb300}
+.counter{margin-top:8px;font-size:.86rem;color:var(--muted);font-weight:700;letter-spacing:1px}
+.counter b{color:var(--gold)}
+
+/* ══════════ CAMPO SOLEADO (TELETUBBIES) ══════════ */
+.field{
+  position:relative;margin-top:38px;padding:120px 18px 150px;overflow:hidden;
+  background:linear-gradient(#4fb4ff,#8fd3ff 55%,#cdeeff);
+  border-top:5px solid #ffd166;
+}
+.sun{
+  position:absolute;right:5%;top:34px;width:130px;height:130px;border-radius:50%;z-index:1;
+  background:radial-gradient(circle at 40% 35%, #fff9d6, #ffd166 55%, #ffb300);
+  box-shadow:0 0 60px #ffe08a,0 0 120px #ffd16688;
+  display:grid;place-items:center;font-size:3.6rem;
+  animation:sunPulse 4s ease-in-out infinite;
+}
+.sun::before{
+  content:"";position:absolute;inset:-26px;border-radius:50%;
+  background:conic-gradient(from 0deg,#ffd16633 0 8deg,transparent 8deg 30deg);
+  animation:spin 24s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes sunPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+
+.cloud{position:absolute;background:#fff;border-radius:99px;opacity:.95;z-index:1;
+  box-shadow:36px 10px 0 -6px #fff, -34px 12px 0 -8px #fff, 12px -16px 0 -10px #fff;
+  animation:drift linear infinite}
+@keyframes drift{from{transform:translateX(-20vw)}to{transform:translateX(115vw)}}
+
+.rainbow{position:absolute;left:-40px;top:10px;width:340px;height:180px;overflow:hidden;opacity:.75;z-index:0}
+.rainbow i{position:absolute;bottom:0;left:50%;transform:translateX(-50%);border-style:solid;border-bottom:none;border-radius:50% 50% 0 0}
+
+.hill{position:absolute;border-radius:50%;z-index:1}
+.hill.h1{width:900px;height:340px;background:#5ecb5e;left:-180px;bottom:-140px;box-shadow:inset 0 14px 0 #7fe07f}
+.hill.h2{width:1000px;height:380px;background:#4cb94c;right:-260px;bottom:-170px;box-shadow:inset 0 14px 0 #6fd76f}
+.dome{position:absolute;z-index:2;width:74px;height:44px;border-radius:74px 74px 0 0;border:4px solid #2f7d2f;border-bottom:none;
+  display:grid;place-items:center}
+.dome::after{content:"";width:18px;height:18px;border-radius:50%;background:#bfe9ff;border:3px solid #2f7d2f}
+
+/* logo burbujas */
+.logo-bubble{
+  position:relative;z-index:3;text-align:center;margin-bottom:34px;
+}
+.logo-bubble .txt{
+  display:inline-block;background:#fff;border:5px solid #ffd166;border-radius:60px;
+  padding:12px 34px;transform:rotate(-3deg);box-shadow:0 10px 0 #00020033,0 18px 40px #0003;
+}
+.logo-bubble .txt b{
+  font-size:clamp(1.6rem,5vw,2.9rem);font-weight:900;font-style:italic;letter-spacing:-1px;
+  background:linear-gradient(#ffe680,#ffb300 60%,#ff7a00);-webkit-background-clip:text;background-clip:text;color:transparent;
+  text-transform:uppercase;
+}
+.logo-bubble .txt small{display:block;font-size:.72rem;letter-spacing:5px;color:#0b5ed7;font-weight:900;text-transform:uppercase}
+.logo-bubble .sub{margin-top:12px;color:#08314f;font-weight:800;text-shadow:0 2px 0 #fff8;letter-spacing:1px}
+
+/* ══════════ TARJETAS PERSONAJE ══════════ */
+.grid{position:relative;z-index:4;display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));max-width:1120px;margin:0 auto}
+.card{perspective:1100px;height:242px;cursor:pointer;animation:pop .5s cubic-bezier(.2,.9,.3,1.4) both}
+@keyframes pop{from{opacity:0;transform:scale(.6) rotate(-8deg)}to{opacity:1;transform:none}}
+.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;
+  transition:transform .7s cubic-bezier(.35,1.5,.45,1)}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--radius);overflow:hidden}
+
+/* frente: personajito */
+.front{
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  padding-bottom:10px;background:linear-gradient(#ffffff55,#ffffff10);
+  border:3px solid #fff;box-shadow:var(--shadow), inset 0 -30px 40px #0002;
+}
+.front::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 18%, #ffffffaa, transparent 55%);pointer-events:none}
+.antenna{position:absolute;top:6px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;z-index:2}
+.antenna .stalk{width:5px;height:20px;background:#1e1e1e;border-radius:4px}
+.antenna .tip{font-size:1.25rem;line-height:1;filter:drop-shadow(0 3px 4px #0005)}
+.head{
+  position:absolute;top:30px;left:50%;transform:translateX(-50%);
+  width:74px;height:74px;border-radius:50%;z-index:2;
+  background:radial-gradient(circle at 35% 30%, #ffffff88, transparent 50%), var(--c);
+  border:4px solid #1e1e1e;display:grid;place-items:center;font-size:2.3rem;
+  box-shadow:0 8px 18px #0004;
+}
+.body{
+  position:relative;width:104px;height:96px;margin-bottom:6px;z-index:1;
+  background:linear-gradient(var(--c2), var(--c));
+  border:4px solid #1e1e1e;border-radius:52% 52% 34% 34% / 60% 60% 40% 40%;
+  display:grid;place-items:center;box-shadow:0 10px 20px #0004;
+}
+.screen{
+  width:52px;height:44px;border-radius:9px;background:linear-gradient(#e9e9e9,#b9b9b9);
+  border:3px solid #1e1e1e;display:grid;place-items:center;font-size:1.35rem;font-weight:900;color:#333;
+}
+.tag{
+  position:relative;z-index:3;background:linear-gradient(#2a1c4d,#160b33);color:#fff;
+  border:2px solid var(--gold);border-radius:99px;padding:4px 14px;font-weight:900;font-size:.9rem;
+  box-shadow:0 5px 12px #0006;max-width:92%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.hint{position:relative;z-index:3;font-size:.66rem;color:#08314f;font-weight:800;margin-top:5px;text-shadow:0 1px 0 #fff9}
+.sticker67{
+  display:none;position:absolute;top:8px;right:8px;z-index:5;
+  background:#ff5e00;color:#fff;font-weight:900;font-style:italic;font-size:.78rem;
+  padding:3px 8px;border-radius:6px;border:2px solid #fff;transform:rotate(10deg);
+  box-shadow:0 4px 10px #0006;
+}
+body.six7 .sticker67{display:block;animation:wig 1.2s ease-in-out infinite}
+@keyframes wig{0%,100%{transform:rotate(10deg) scale(1)}50%{transform:rotate(-8deg) scale(1.12)}}
+
+/* reverso: revelación */
+.back{
+  transform:rotateY(180deg);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;text-align:center;padding:14px;
+  background:
+    repeating-conic-gradient(from 0deg at 50% 45%, #ff5e0022 0 12deg, transparent 12deg 24deg),
+    radial-gradient(circle at 50% 40%, #a13d2b, #5b1580 70%, #2a0f4d);
+  border:3px solid var(--gold);box-shadow:var(--shadow);
+}
+.back .gift{font-size:2.2rem;animation:wig 1.3s ease-in-out infinite;filter:drop-shadow(0 4px 8px #0008)}
+@keyframes wig{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg) scale(1.1)}}
+.back .label{font-size:.66rem;letter-spacing:3px;text-transform:uppercase;color:#ffe9b0;font-weight:800}
+.back .target{
+  font-weight:900;font-size:1.5rem;line-height:1.1;color:#fff;
+  text-shadow:0 0 14px #ffd166,0 4px 0 #6b2400,0 8px 18px #0009;
+  text-transform:uppercase;font-style:italic;
+}
+.back .whisper{font-size:.66rem;color:#ffd166;font-weight:700}
+.card.flipped .back{box-shadow:0 0 0 4px var(--gold),0 18px 40px #0009}
+.card.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-9px)}75%{transform:translateX(9px)}}
+
+/* ══════════ MENÚ PAUSA (CONFIG) ══════════ */
+.pause{
+  max-width:1120px;margin:46px auto 0;padding:22px;border-radius:var(--radius);
+  background:linear-gradient(150deg,#0d1a0f,#07130b);border:3px solid var(--xbox-light);
+  box-shadow:0 0 40px #9bf00b33, var(--shadow);
+}
+.pause h3{color:var(--xbox-light);letter-spacing:3px;font-size:.95rem;text-transform:uppercase;
+  display:flex;gap:10px;align-items:center;margin-bottom:12px}
+.pause h3::before{content:"▶";color:#fff}
+.pause textarea{
+  width:100%;min-height:110px;resize:vertical;background:#04120a;color:#b7ffce;
+  border:2px solid #ffffff26;border-radius:12px;padding:14px;outline:none;
+  font-family:Consolas,monospace;font-size:.95rem;letter-spacing:.5px;
+}
+.pause textarea:focus{border-color:var(--xbox-light);box-shadow:0 0 0 3px #9bf00b33}
+.pause .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.rules{margin-top:14px;font-size:.82rem;color:#9fd7ae;line-height:1.8}
+.rules b{color:var(--xbox-light)}
+
+/* ══════════ BLOQUEO / PASA EL DISPOSITIVO ══════════ */
+button:disabled{opacity:.4;cursor:not-allowed;filter:grayscale(.7);transform:none!important;box-shadow:none!important}
+.card.claimed{cursor:not-allowed}
+.card.claimed .front{filter:saturate(.55) brightness(.85);border-color:var(--xbox-light)}
+.claimed-stamp{
+  display:none;position:absolute;inset:0;z-index:6;border-radius:var(--radius);
+  background:radial-gradient(circle at 50% 40%, #0d1a0fee, #04120af2);
+  flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  color:var(--xbox-light);font-weight:900;letter-spacing:2px;text-transform:uppercase;font-size:.82rem;text-align:center;
+}
+.claimed-stamp .lk{font-size:2.2rem;filter:drop-shadow(0 4px 10px #000a)}
+.card.claimed .claimed-stamp{display:flex}
+
+.lockbar{
+  position:fixed;left:50%;bottom:24px;z-index:1050;display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center;
+  background:linear-gradient(120deg,#160b33,#2a1c4d);border:3px solid var(--gold);border-radius:16px;
+  padding:14px 20px;box-shadow:0 24px 60px #000c,0 0 40px #ffd16655;
+  transform:translate(-50%,220%);transition:transform .45s cubic-bezier(.2,1.3,.4,1);max-width:94vw;text-align:center;
+}
+.lockbar.show{transform:translate(-50%,0)}
+.lockbar span{font-size:.92rem;color:#ffe9b0}
+.lockbar span b{color:#fff}
+
+/* ══════════ MODAL ══════════ */
+.modal{
+  position:fixed;inset:0;z-index:1100;display:grid;place-items:center;padding:20px;
+  background:#000c;backdrop-filter:blur(7px);opacity:0;pointer-events:none;transition:.3s;
+}
+.modal.show{opacity:1;pointer-events:auto}
+.modal-\boxed{
+  background:linear-gradient(160deg,#2e1d5c,#160b33 70%);border:3px solid var(--gold);border-radius:24px;
+  padding:28px 26px;max-width:430px;width:100%;text-align:center;box-shadow:0 34px 90px #000d,0 0 60px #9d6bff44;
+  transform:scale(.8) translateY(24px);transition:.38s cubic-bezier(.2,1.4,.4,1);
+}
+.modal.show .modal-\boxed{transform:none}
+.modal-emoji{font-size:3.2rem;filter:drop-shadow(0 6px 12px #0008);animation:wig 1.6s ease-in-out infinite}
+.modal-title{font-size:1.35rem;font-weight:900;color:var(--gold);margin:10px 0 8px;text-transform:uppercase;letter-spacing:1px}
+.modal-text{color:var(--muted);font-size:.95rem;line-height:1.65}
+.modal-text b{color:#fff}
+.modal-text input{
+  width:100%;margin-top:12px;padding:12px;border-radius:10px;border:2px solid #ffffff33;background:#0d0619;
+  color:var(--gold);font-size:1.1rem;font-weight:900;text-align:center;letter-spacing:6px;outline:none;font-family:inherit;
+}
+.modal-text input:focus{border-color:var(--gold)}
+.modal-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.modal-actions button{font-size:.9rem;padding:12px 20px}
+
+/* roster bloqueado (invitados de sala) */
+.roster-lock{
+  display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  margin-top:12px;padding:12px 16px;border-radius:12px;
+  background:linear-gradient(90deg,#2a1204,#3a1a05);border:2px dashed #ff9d00;
+  color:#ffd8a8;font-size:.88rem;animation:pulseLock 2.4s ease-in-out infinite;
+}
+@keyframes pulseLock{0%,100%{box-shadow:0 0 0 #ffb30000}50%{box-shadow:0 0 18px #ffb30066}}
+.pause.locked textarea{opacity:.55;cursor:not-allowed}
+.sala-chip{
+  display:none;align-items:center;gap:8px;margin:0 auto 6px;width:max-content;
+  background:linear-gradient(90deg,#0d1a0f,#123);border:2px solid var(--xbox-light);
+  color:var(--xbox-light);font-weight:800;font-size:.78rem;letter-spacing:2px;
+  padding:6px 16px;border-radius:99px;text-transform:uppercase;box-shadow:0 0 20px #9bf00b44;
+}
+body.en-sala .sala-chip{display:flex}
+
+/* ══════════ LOGRO ESTILO CONSOLA ══════════ */
+.ach{
+  position:fixed;right:20px;top:20px;z-index:1000;display:flex;gap:12px;align-items:center;
+  background:linear-gradient(100deg,#0d1a0f,#000);border-left:5px solid var(--xbox-light);
+  border-radius:10px;padding:13px 20px;min-width:290px;max-width:90vw;
+  box-shadow:0 18px 40px #000c,0 0 30px #9bf00b55;
+  transform:translateX(130%);transition:transform .5s cubic-bezier(.2,1.3,.4,1);
+}
+.ach.show{transform:translateX(0)}
+.ach .ico{width:44px;height:44px;border-radius:8px;background:linear-gradient(#22c55e,var(--xbox));
+  display:grid;place-items:center;font-size:1.5rem;box-shadow:inset 0 -4px 0 #0a5a0a}
+.ach small{display:block;font-size:.66rem;letter-spacing:2px;color:#9bf00b;text-transform:uppercase}
+.ach b{font-size:.98rem;color:#fff}
+
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,160%);
+  background:linear-gradient(135deg,#2a1c4d,#5b1580);border:2px solid var(--gold);
+  color:#fff;padding:13px 24px;border-radius:99px;font-weight:800;z-index:1000;
+  box-shadow:var(--shadow);transition:transform .4s cubic-bezier(.2,1.4,.4,1);max-width:92vw;text-align:center;
+}
+#toast.show{transform:translate(-50%,0)}
+
+footer{
+  text-align:center;color:#8f7fbf;font-size:.8rem;padding:30px 16px 40px;letter-spacing:1px;
+}
+footer b{color:var(--gold)}
+
+@media(max-width:640px){
+  .spine{width:40px}
+  .cover-body{padding:60px 16px 90px 56px}
+  .mode67{top:52px;right:12px;transform:scale(.8) rotate(3deg);transform-origin:top right}
+  .esrb{left:56px;bottom:16px;transform:scale(.85);transform-origin:bottom left}
+  .dev{right:10px;bottom:12px;transform:scale(.8);transform-origin:bottom right}
+  .beam{display:none}
+  .field{padding-top:100px}
+}
+</style>
+<!-- ═══════ Firebase SDK modular v10+ (CDN) ═══════ -->
+<script type="importmap">
+{
+  "imports": {
+    "firebase/app":     "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js",
+    "firebase/firestore":"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+  }
+}
+</script>
+</head>
+<body>
+<canvas id="fx"></canvas>
+
+<!-- ═══════ PORTADA ═══════ -->
+<header class="cover">
+  <div class="spine">
+    <div class="logo">A</div>
+    <div class="stext">Amigos Series X</div>
+    <div class="badge">67</div>
+  </div>
+
+  <div class="beam b1"></div><div class="beam b2"></div><div class="beam b3"></div>
+
+  <div class="ticker"><span class="run" id="ticker">🔥 LLLEGA A TU LÍMITE... ¡MÁS! 🔥 &nbsp; LLLEGA A TU LÍMITE... ¡MÁS! 🔥 &nbsp; LLLEGA A TU LÍMITE... ¡MÁS! 🔥 &nbsp; LLLEGA A TU LÍMITE... ¡MÁS! 🔥</span></div>
+
+  <div class="mode67" id="modeBadge">
+    <div class="num">67</div>
+    <div class="lbl">SIX SEVEN MODE ENABLED</div>
+  </div>
+
+  <span class="deco" style="left:12%;top:24%">🎭</span>
+  <span class="deco" style="left:46%;top:16%;animation-delay:.8s">🐷</span>
+  <span class="deco" style="right:30%;bottom:26%;animation-delay:1.6s">🦊</span>
+  <span class="deco" style="left:24%;bottom:30%;animation-delay:2.4s">🍎</span>
+
+  <div class="cover-body">
+    <div class="kicker">Maxmela and the Pistoinar presentan</div>
+    <h1 class="title">Amigo<br>Secreto</h1>
+    <div>
+      <span class="plate blue"><span>and the Pistoinar</span></span>
+      <span class="plate orange"><span>Six Seven Edition</span></span>
+    </div>
+  </div>
+
+  <div class="esrb">
+    <div class="big">E</div>
+    <div class="t">EVERYONE</div>
+    <div class="t2">Fuego en la cara · Amigos secretos revelados</div>
+  </div>
+
+  <div class="dev">
+    <small>GRAPHIC DESIGNER</small>
+    <b>LE</b>
+    <i>SINCE 2008</i>
+  </div>
+
+  <div class="flame-edge"></div>
+</header>
+
+<!-- ═══════ CONTROLES ═══════ -->
+<div class="sala-chip" id="salaChip">🔗 SALA EN VIVO · <b id="salaIdTxt">—</b></div>
+<div class="controls">
+  <button class="btn-start" id="btnDraw">🎲 SORTEAR</button>
+  <button class="btn-c" id="btnCopy" disabled title="Se habilita cuando todos hayan reclamado su secreto">📋 Copiar resultados</button>
+  <button class="btn-g" id="btnReset">🔑 Reiniciar (código)</button>
+  <button class="btn-v" id="btnInvite" disabled title="Copia el enlace de tu sala para invitar a todos">🔗 Copiar enlace de invitación</button>
+  <label class="switch" title="Modo caos: estickers 67, confeti intenso y título al rojo vivo">
+    <input type="checkbox" id="chk67"> 😈 Six Seven Mode (67)
+  </label>
+</div>
+
+<div class="progress-zone">
+  <div class="bar"><span id="bar"></span></div>
+  <div class="counter">SECRETOS ENTREGADOS — <b id="count">0</b> / <b id="total">0</b> jugadores</div>
+</div>
+
+<!-- ═══════ CAMPO ═══════ -->
+<section class="field">
+  <div class="rainbow">
+    <i style="width:330px;height:165px;border-width:12px;border-color:#ff3b3b"></i>
+    <i style="width:306px;height:153px;border-width:12px;border-color:#ff9d00"></i>
+    <i style="width:282px;height:141px;border-width:12px;border-color:#ffd166"></i>
+    <i style="width:258px;height:129px;border-width:12px;border-color:#3ddc6b"></i>
+    <i style="width:234px;height:117px;border-width:12px;border-color:#4aa8ff"></i>
+    <i style="width:210px;height:105px;border-width:12px;border-color:#7c5cff"></i>
+    <i style="width:186px;height:93px;border-width:12px;border-color:#e36bff"></i>
+  </div>
+
+  <div class="sun">👶</div>
+  <div class="cloud" style="width:90px;height:34px;top:60px;animation-duration:38s"></div>
+  <div class="cloud" style="width:70px;height:26px;top:130px;animation-duration:52s;animation-delay:-20s"></div>
+  <div class="cloud" style="width:110px;height:40px;top:34px;animation-duration:64s;animation-delay:-40s;opacity:.8"></div>
+
+  <div class="hill h1"></div>
+  <div class="hill h2"></div>
+  <div class="dome" style="left:8%;bottom:56px;background:#ff8fb1"></div>
+  <div class="dome" style="right:12%;bottom:70px;background:#ffd166"></div>
+  <div class="dome" style="left:44%;bottom:34px;background:#9d6bff;transform:scale(.8)"></div>
+
+  <div class="logo-bubble">
+    <div class="txt"><b>Amigotubbies</b><small>Amigo Secreto</small></div>
+    <div class="sub">🌈 Toca <b>TU personaje</b>, ve tu amigo secreto y guárdalo — uno por uno 🌈</div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- ═══════ MENÚ PAUSA ═══════ -->
+<section class="pause">
+  <h3>Pause Menu — Roster de jugadores</h3>
+  <textarea id="namesBox" spellcheck="false"></textarea>
+  <div class="row">
+    <button class="btn-x btn-small" id="btnApply" style="padding:10px 18px;font-size:.85rem">✅ Aplicar lista</button>
+    <button class="btn-g" id="btnShuffleNames" style="padding:10px 18px;font-size:.85rem">🔀 Mezclar orden</button>
+    <span class="counter" id="listInfo"></span>
+  </div>
+  <div class="roster-lock" id="rosterLock" hidden>
+    <span>🔒 <b>Roster bloqueado</b> — los invitados de la sala no pueden alterar la lista</span>
+    <button class="btn-g" id="btnUnlockRoster" style="padding:9px 16px;font-size:.8rem">🔑 Soy organizador</button>
+  </div>
+  <div class="rules">
+    <b>Reglas del modo historia:</b> nadie se toca a sí mismo · no existen parejas mutuas A↔B ·
+    cada jugador ve <b>únicamente su resultado</b> y al guardarlo su tarjeta queda 🔒 bloqueada
+    hasta que todos reclamen uno por uno · el sorteo se guarda cifrado en tu navegador 🔐<br>
+    <b>Truco:</b> activa el <b>Six Seven Mode</b> para que las tarjetas lleven el sello 67 😈 ·
+    el <b>código del organizador</b> para reiniciar es <b>67</b> 🔑
+  </div>
+</section>
+
+<footer>
+  © Amigotubbies Studios · <b>GRAPHIC DESIGNER LE — SINCE 2008</b> · LLEGA A TU LÍMITE, ¡MÁS! 🎭🔥
+</footer>
+
+<!-- ═══════ PASA EL DISPOSITIVO ═══════ -->
+<div class="lockbar" id="lockbar">
+  <span id="lockText">Tu resultado está a la vista</span>
+  <button class="btn-x" id="btnLock">🔒 Guardar y pasar el dispositivo</button>
+</div>
+
+<!-- ═══════ MODAL ═══════ -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="modal-emoji" id="modalEmoji">🤔</div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-text" id="modalText"></div>
+    <div class="modal-actions" id="modalActions"></div>
+  </div>
+</div>
+
+<div class="ach" id="ach"><div class="ico">🏆</div><div><small>Logro desbloqueado</small><b id="achText"></b></div></div>
+<div id="toast"></div>
+
+<script type="module">
+/* ═══════════════════════════════════════════════════════════════════
+   ①  CONFIGURACIÓN DE FIREBASE  —  PEGA AQUÍ TU OBJETO firebaseConfig
+   ───────────────────────────────────────────────────────────────────
+   1. Ve a https://console.firebase.google.com  →  Crear proyecto
+   2. Build → Firestore Database → Create database → Start in test mode
+   3. ⚙ Project settings → Your apps → </> Web app → Register app
+   4. Copia el objeto "const firebaseConfig = { ... }" y PÉGALO AQUÍ
+      reemplazando el bloque de abajo (solo cambia los valores,
+      NO toques ni las llaves ni las comillas)
+   ═══════════════════════════════════════════════════════════════════ */
+const firebaseConfig = {
+  apiKey: "AIzaSyAlNYjvNGZCEHaBlvWMW9wFhB8Ng0wwDMo",
+  authDomain: "amigo-secreto-4eafe.firebaseapp.com",
+  projectId: "amigo-secreto-4eafe",
+  storageBucket: "amigo-secreto-4eafe.firebasestorage.app",
+  messagingSenderId: "755157732673",
+  appId: "1:755157732673:web:1d54992cd698d8d52ba5c0",
+  measurementId: "G-FJQLMLPV08"
+};
+/* ═══════════ FIN DE LA CONFIGURACIÓN — no tocar nada de abajo ═══════════ */
+
+const CONFIG_OK = !!firebaseConfig.apiKey && !String(firebaseConfig.apiKey).includes("PEGA_AQUI");
+const SALA_INICIAL = (()=>{
+  try{
+    const p = new URLSearchParams(location.search).get("sala");
+    if(p) return p.trim();
+    const h = location.hash.match(/sala=([A-Za-z0-9_-]+)/);
+    if(h) return h[1];
+  }catch(e){}
+  return null;
+})();
+
+/* ══════════ ESTADO ══════════ */
+const DEFAULT_NAMES = ["Maxmela","Edwin","Cuy","Jeiden","Kami","Mateo","Laura","Brandon","Javier","Joseph","Alvaro","Descanse","Zammyr","neitan"];
+const FACES  = ["😀","🤓","😎","😜","😇","🤩","🥳","🙃","😏","🤪","😺","🤠","😈","🥸"];
+const TIPS   = ["🔺","⭕","⭐","🔷","💛","🌀"];
+const COLORS = [
+  ["#9b5de5","#6d3bd1"],["#ffd600","#e0a800"],["#43c465","#2a9447"],["#ef476f","#c22e52"],
+  ["#ff8fab","#e05f85"],["#ff9f43","#d97706"],["#3fb6ff","#0b7fd4"],["#4ee6c1","#1fb894"],
+  ["#f1f5f9","#b9c2cf"],["#b08154","#8a6138"],["#a3e635","#65a30d"],["#f472b6","#db2777"],
+  ["#2dd4bf","#0d9488"],["#94a3b8","#64748b"]
+];
+const KEY = "amigo-secreto-v1";
+const ORG_KEY = "amigo-secreto-organizador-sala";
+
+let state = { names:[...DEFAULT_NAMES], assignEnc:"", claimed:[], six7:false };
+let openCard = null;          // persona cuyo resultado está visible AHORA
+let celebrated = false;
+
+function encode(o){ return btoa(encodeURIComponent(JSON.stringify(o))); }
+function getAssign(){
+  try{ return state.assignEnc ? JSON.parse(decodeURIComponent(atob(state.assignEnc))) : {}; }
+  catch(e){ return {}; }
+}
+/* ══════════ NUBE — salas en Firestore (tiempo real) ══════════ */
+let FS = null;              // helpers del SDK modular (setDoc, updateDoc, onSnapshot...)
+let db = null;              // instancia de Firestore
+let roomRef = null;         // referencia al documento de la sala
+let roomId = null;          // ID de la sala (?sala=XXXXXX)
+let roomMode = false;       // true => la fuente de verdad es la nube
+let organizerUnlocked = false; // este dispositivo puede editar la sala/roster
+let primerSnapshot = true;
+
+function isCloud(){ return roomMode && !!FS && !!roomRef; }
+
+/* en modo sala la nube es la única fuente de verdad */
+function save(){ if(isCloud()) return; localStorage.setItem(KEY, JSON.stringify(state)); }
+function load(){
+  if(SALA_INICIAL) return;   // quien entra por enlace usa los datos de la sala
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(raw){
+      const s = JSON.parse(raw);
+      if(Array.isArray(s.names)) state = {...state, ...s};
+      if(!Array.isArray(state.claimed)) state.claimed = [];
+      if(!state.assignEnc && s.assign) state.assignEnc = encode(s.assign); // migración
+      delete state.assign; delete state.revealed; delete state.reciprocal;
+    }
+  }catch(e){}
+}
+load();
+
+/* ══════════ UTILIDADES ══════════ */
+const $ = id => document.getElementById(id);
+const grid = $("grid");
+
+function toast(msg){
+  const t = $("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._h); t._h = setTimeout(()=>t.classList.remove("show"), 2800);
+}
+function achievement(txt){
+  const a = $("ach"); $("achText").textContent = txt;
+  a.classList.add("show"); achSound();
+  clearTimeout(a._h); a._h = setTimeout(()=>a.classList.remove("show"), 3600);
+}
+function shuffle(a){ a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function hash(s){ let h=0; for(const c of s) h=(h*31+c.charCodeAt(0))>>>0; return h; }
+
+/* permutación sin fijos y sin recíprocos */
+function drawAssignments(names, avoidReciprocal){
+  const n = names.length;
+  if(n < 2) return null;
+  for(let k=0;k<4000;k++){
+    const perm = shuffle(names); let ok = true;
+    const pos = {}; names.forEach((nm,i)=>pos[nm]=i);
+    for(let i=0;i<n;i++){
+      if(perm[i] === names[i]){ ok=false; break; }
+      if(avoidReciprocal && perm[pos[perm[i]]] === names[i]){ ok=false; break; }
+    }
+    if(ok){ const res={}; names.forEach((nm,i)=>res[nm]=perm[i]); return res; }
+  }
+  const res = {}; names.forEach((nm,i)=>res[nm]=names[(i+1)%n]); return res;
+}
+
+/* ══════════ RENDER ══════════ */
+function render(){
+  grid.innerHTML = "";
+  const n = state.names.length;
+  const asg = getAssign();
+  $("total").textContent = n;
+  $("listInfo").textContent = n + " jugadores en el campo";
+
+  state.names.forEach((name, i)=>{
+    const isClaimed = state.claimed.includes(name);
+    const hasDraw = !!asg[name];
+    const h = hash(name);
+    const [c,c2] = COLORS[h % COLORS.length];
+    const face   = FACES[(h>>>3) % FACES.length];
+    const tip    = TIPS[(h>>>6) % TIPS.length];
+
+    const card = document.createElement("div");
+    const isOpen = openCard === name && !isClaimed;   // conserva el volcado si llega un snapshot
+    card.className = "card" + (isClaimed ? " claimed" : "") + (isOpen ? " flipped" : "");
+    card.style.animationDelay = (i*45)+"ms";
+    card.dataset.name = name;
+    card.style.setProperty("--c", c);
+    card.style.setProperty("--c2", c2);
+
+    // ⚠️ el reverso NUNCA lleva el resultado: solo se inyecta al dueño en el momento
+    card.innerHTML = `
+      <div class="card-inner">
+        <div class="face front">
+          <div class="sticker67">67</div>
+          <div class="claimed-stamp"><span class="lk">🔒</span>reclamado<br><span style="font-size:.66rem;opacity:.8">ya vio su secreto</span></div>
+          <div class="antenna"><span class="stalk"></span><span class="tip">${tip}</span></div>
+          <div class="head">${face}</div>
+          <div class="body"><div class="screen">${isClaimed ? "🔒" : (hasDraw ? "?" : "—")}</div></div>
+          <div class="tag">${name}</div>
+          <div class="hint">${isClaimed ? "ya reclamó ✓" : (hasDraw ? "toca para reclamar" : "esperando sorteo...")}</div>
+        </div>
+        <div class="face back">
+          <div class="gift">🎁</div>
+          <div class="label">Tu amigo secreto es</div>
+          <div class="target">${isOpen ? (asg[name] || "—") : "—"}</div>
+          <div class="whisper">shhh... guárdalo en secreto 🤫</div>
+        </div>
+      </div>`;
+
+    card.addEventListener("click", ()=>onCardClick(name, card));
+    grid.appendChild(card);
+  });
+
+  updateProgress();
+}
+
+function updateProgress(){
+  const total = state.names.length;
+  const done = state.claimed.filter(c=>state.names.includes(c)).length;
+  $("count").textContent = done;
+  $("bar").style.width = (total ? (done/total*100) : 0) + "%";
+  $("btnCopy").disabled = !(total > 0 && done >= total);
+}
+
+/* ══════════ MODAL ══════════ */
+function modal({emoji="🤔", title="", text="", actions=[]}){
+  $("modalEmoji").textContent = emoji;
+  $("modalTitle").textContent = title;
+  $("modalText").innerHTML = text;
+  const box = $("modalActions"); box.innerHTML = "";
+  actions.forEach(a=>{
+    const b = document.createElement("button");
+    b.className = a.cls || "btn-g"; b.textContent = a.label;
+    b.addEventListener("click", a.fn);
+    box.appendChild(b);
+  });
+  $("modal").classList.add("show");
+}
+function closeModal(){ $("modal").classList.remove("show"); }
+
+/* ══════════ CÓDIGO DE ORGANIZADOR (67) ══════════ */
+function pedirCodigo({emoji="🔑", title="Código de organizador", text="", accion}){
+  modal({
+    emoji, title,
+    text: `${text}<br><span style="font-size:.78rem">pista: es el número de la portada 😈</span>
+      <input id="codeInput" maxlength="6" autocomplete="off" placeholder="•••">`,
+    actions:[
+      {label:"🔓 Aceptar", cls:"btn-start", fn:()=>{
+        const v = (document.getElementById("codeInput").value || "").trim();
+        if(v !== "67"){ toast("❌ Código incorrecto"); return; }
+        closeModal(); accion();
+      }},
+      {label:"Cancelar", cls:"btn-g", fn:closeModal}
+    ]
+  });
+}
+
+/* ══════════ SALAS — helpers ══════════ */
+function genId(){
+  const abc = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";  // sin O/0/I/1 para no confundir
+  let s = ""; for(let i=0;i<6;i++) s += abc[Math.floor(Math.random()*abc.length)];
+  return s;
+}
+function setUrlSala(id){
+  try{ history.pushState({sala:id}, "", "?sala=" + id); }
+  catch(e){ try{ location.hash = "sala=" + id; }catch(e2){} }  // fallback en file://
+}
+function urlSala(){ return location.href.split(/[?#]/)[0] + "?sala=" + roomId; }
+
+async function copiarEnlace(){
+  if(!isCloud()){ toast("Primero crea la sala con 🎲 SORTEAR"); return; }
+  const url = urlSala();
+  try{
+    await navigator.clipboard.writeText(url);
+    achievement("🔗 Enlace de invitación copiado");
+    if(location.protocol === "file:")
+      toast("⚠️ Para que otros abran el enlace, publica la página (GitHub Pages)");
+  }catch(e){
+    modal({
+      emoji:"📋", title:"Copia el enlace",
+      text:`<input id="linkInput" readonly value="${url}" style="width:100%;margin-top:12px;padding:11px;border-radius:8px;border:2px solid #ffd166;background:#0d0619;color:#fff;font-size:.78rem;letter-spacing:0;text-align:left;font-family:inherit">`,
+      actions:[{label:"Cerrar", cls:"btn-g", fn:closeModal}]
+    });
+    setTimeout(()=>{ const i = document.getElementById("linkInput"); if(i){ i.focus(); i.select(); } }, 150);
+  }
+}
+
+function updatePauseLock(){
+  const locked = isCloud() && !organizerUnlocked;
+  $("rosterLock").hidden = !locked;
+  $("namesBox").disabled = locked;
+  $("btnApply").disabled = locked;
+  $("btnShuffleNames").disabled = locked;
+  document.querySelector(".pause").classList.toggle("locked", locked);
+}
+
+/* datos que llegan desde Firestore (cualquier dispositivo) */
+function handleRoomData(data, primero=false){
+  if(Array.isArray(data.names)) state.names = data.names;
+  state.assignEnc = data.assignEnc || "";
+  const rec = data.reclamado || {};
+  state.claimed = Object.keys(rec).filter(k=>rec[k]);
+
+  if(!state.assignEnc){                          // sorteo borrado por el organizador
+    celebrated = false;
+    if($("modalTitle").textContent.includes("Todos lo saben")) closeModal();
+  }
+  $("namesBox").value = state.names.join("\n");
+  render();
+  updatePauseLock();
+  if(primero) toast(`🔗 Conectado a la sala ${roomId} — ${state.names.length} jugadores`);
+  checkAllClaimed(primero);
+}
+
+/* suscripción en tiempo real a la sala */
+function conectar(ref, id, esCreador){
+  roomRef = ref; roomId = id; roomMode = true; primerSnapshot = true;
+  organizerUnlocked = !!esCreador || localStorage.getItem(ORG_KEY) === id;
+  document.body.classList.add("en-sala");
+  $("salaIdTxt").textContent = id;
+  $("btnInvite").disabled = false;
+  updatePauseLock();
+
+  FS.onSnapshot(ref, snap=>{
+    const primero = primerSnapshot; primerSnapshot = false;
+    if(!snap.exists()){
+      if(primero){
+        roomMode = false; document.body.classList.remove("en-sala");
+        $("btnInvite").disabled = true; updatePauseLock();
+        toast("🚫 Sala no encontrada (¿fue borrada?)");
+      }else{
+        state.assignEnc = ""; state.claimed = []; celebrated = false;
+        render(); toast("🔄 El organizador reinició la sala");
+      }
+      return;
+    }
+    handleRoomData(snap.data(), primero);
+  }, err=>{
+    console.warn("onSnapshot error:", err);
+    toast("⚠️ Sin conexión con la sala — modo local");
+  });
+}
+
+/* el organizador crea la sala y genera el enlace */
+async function crearSala(){
+  const names = [...state.names];
+  const id = genId();
+  const nuevo = { names, assignEnc: encode(drawAssignments(names, true)), reclamado:{} };
+  const ref = FS.doc(db, "salas", id);
+  try{
+    await FS.setDoc(ref, { ...nuevo, creadaEn: FS.serverTimestamp(), actualizadoEn: FS.serverTimestamp() });
+  }catch(e){
+    console.warn(e); toast("❌ No se pudo crear la sala en Firebase"); return;
+  }
+  try{ localStorage.setItem(ORG_KEY, id); }catch(e){}
+  conectar(ref, id, true);
+  setUrlSala(id);
+  state.names = names; state.assignEnc = nuevo.assignEnc; state.claimed = [];
+  celebrated = false;
+  render();
+  bigConfetti(); chime(true);
+  achievement(`🎲 Sala ${id} creada`);
+  modal({
+    emoji:"🔗", title:`¡Sala ${id} creada!`,
+    text:"Comparte el enlace para que todos se conecten y cada uno reclame <b>su</b> secreto desde su propio celular. Tú sigues siendo el organizador en este dispositivo.",
+    actions:[
+      {label:"🔗 Copiar enlace", cls:"btn-c", fn:copiarEnlace},
+      {label:"¡A jugar! 🎮", cls:"btn-start", fn:closeModal}
+    ]
+  });
+}
+
+/* el código 67 borra el sorteo en TODOS los dispositivos */
+function aplicarReset(){
+  openCard = null;
+  $("lockbar").classList.remove("show");
+  if(isCloud()){
+    state.assignEnc = ""; state.claimed = []; celebrated = false;   // optimista: no esperar al echo
+    render();
+    FS.updateDoc(roomRef, { assignEnc:"", reclamado:{}, actualizadoEn: FS.serverTimestamp() })
+      .then(()=> toast("🔄 Sorteo borrado en la sala para TODOS"))
+      .catch(()=> toast("❌ No se pudo borrar en la sala"));
+    return;
+  }
+  state.assignEnc = ""; state.claimed = []; celebrated = false;
+  save(); render(); toast("🔄 Sorteo borrado — listo para un nuevo juego");
+}
+
+/* ══════════ INTERACCIÓN — PASA EL DISPOSITIVO ══════════ */
+function onCardClick(name, card){
+  const asg = getAssign();
+  if(!asg[name]){
+    card.classList.remove("shake"); void card.offsetWidth; card.classList.add("shake");
+    toast("El organizador aún no pulsa 🎲 SORTEAR");
+    return;
+  }
+  if(state.claimed.includes(name)){
+    toast("🔒 Ese secreto ya fue reclamado por su dueño");
+    return;
+  }
+  if(openCard){
+    toast("🔒 Guarda tu secreto antes de tocar otra tarjeta");
+    return;
+  }
+  modal({
+    emoji:"🫣", title:"¿Quién eres?",
+    text:`Confirma únicamente si realmente eres <b>${name}</b>.<br><br>Verás tu amigo secreto <b>una sola vez</b> y quedará bloqueado para los demás.`,
+    actions:[
+      {label:`✅ Sí, soy ${name}`, cls:"btn-start", fn:()=>{ closeModal(); revealFor(name, card); }},
+      {label:"❌ Cancelar", cls:"btn-g", fn:closeModal}
+    ]
+  });
+}
+
+function revealFor(name, card){
+  const asg = getAssign();
+  openCard = name;
+  card.querySelector(".target").textContent = asg[name];   // único resultado presente en el DOM
+  card.classList.add("flipped");
+  burst(card); chime(true);
+  achievement(`🎁 ${name} → ${asg[name]} · ¡guárdalo en secreto!`);
+  $("lockText").innerHTML = `Estás viendo el secreto de <b>${name}</b> — nadie más debe verlo`;
+  $("btnLock").textContent = isCloud()
+    ? "🔒 Guardar y bloquear mi tarjeta"
+    : "🔒 Guardar y pasar el dispositivo";
+  $("lockbar").classList.add("show");
+}
+
+function lockSecret(){
+  if(!openCard) return;
+  const name = openCard; openCard = null;
+  if(!state.claimed.includes(name)) state.claimed.push(name);
+  $("lockbar").classList.remove("show");
+  render();
+  chime();
+
+  if(isCloud() && FS){
+    // solo se escribe el flag de ESTE jugador (reclamado: true) en Firestore
+    const campo = "reclamado." + name.replace(/\\/g, "\\\\").replace(/\./g, "\\.");
+    FS.updateDoc(roomRef, { [campo]: true, actualizadoEn: FS.serverTimestamp() })
+      .then(()=> toast("🔒 Guardado y bloqueado en la sala"))
+      .catch(err=>{ console.warn(err); toast("⚠️ Sin conexión — se guardó localmente"); });
+  }else{
+    save();
+    toast("🔒 Guardado... pasa el dispositivo a la siguiente persona");
+  }
+  checkAllClaimed();
+}
+$("btnLock").addEventListener("click", lockSecret);
+
+function checkAllClaimed(silent=false){
+  const total = state.names.length;
+  if(total > 0 && state.claimed.length >= total && !celebrated){
+    celebrated = true;
+    if(silent){ toast(`🎉 Los ${total} secretos ya fueron entregados`); return; }
+    bigConfetti(); chime(true);
+    achievement("👑 ¡LOS SECRETOS ENTREGADOS!");
+    modal({
+      emoji:"🎉", title:"¡Todos lo saben!",
+      text:`Los <b>${total}</b> secretos fueron entregados uno por uno.<br><br>Ya puedes copiar el resultado completo y mandarlo al grupo 🎁`,
+      actions:[{label:"🏁 Terminar", cls:"btn-start", fn:closeModal}]
+    });
+  }
+}
+
+$("btnDraw").addEventListener("click", ()=>{
+  const names = state.names;
+  if(names.length < 2){ toast("Necesitas al menos 2 jugadores"); return; }
+
+  /* ── 1) Ya estoy en una sala: re-sortear para todos ── */
+  if(isCloud()){
+    const lanzar = ()=>{
+      const nueva = encode(drawAssignments(names, true));
+      FS.updateDoc(roomRef, { assignEnc: nueva, reclamado:{}, actualizadoEn: FS.serverTimestamp() })
+        .then(()=>{
+          celebrated = false;
+          bigConfetti(); chime(true);
+          achievement("🎲 Sorteo actualizado en la sala");
+          modal({
+            emoji:"🎲", title:"¡Sorteo listo!",
+            text:"Cada jugador toca <b>su personaje</b> desde su dispositivo, confirma quién es, ve su amigo secreto y lo guarda con 🔒.",
+            actions:[{label:"¡A jugar! 🎮", cls:"btn-start", fn:closeModal}]
+          });
+        })
+        .catch(()=> toast("❌ No se pudo actualizar la sala"));
+    };
+    if(state.claimed.length){
+      modal({
+        emoji:"⚠️", title:"Re-sortear la sala",
+        text:`Esto borrará los <b>${state.claimed.length}</b> secretos ya reclamados <b>en todos los dispositivos</b>.<br>¿Seguro?`,
+        actions:[
+          {label:"Sí, re-sortear", cls:"btn-start", fn:()=>{ closeModal(); lanzar(); }},
+          {label:"Cancelar", cls:"btn-g", fn:closeModal}
+        ]
+      });
+    }else if(organizerUnlocked) lanzar();
+    else pedirCodigo({
+      title:"🎲 Sortear la sala",
+      text:"Solo el organizador puede (re)sortear una sala existente.",
+      accion:()=>{ organizerUnlocked = true; lanzar(); }
+    });
+    return;
+  }
+
+  /* ── 2) Primera vez con Firebase configurado: CREAR SALA + enlace ── */
+  if(CONFIG_OK && FS){
+    crearSala();
+    return;
+  }
+
+  /* ── 3) Sin Firebase: modo local (pasar el dispositivo) ── */
+  const doDraw = ()=>{
+    state.assignEnc = encode(drawAssignments(names, true));
+    state.claimed = []; celebrated = false;
+    save(); render();
+    bigConfetti(); chime(true);
+    achievement("🎲 Sorteo listo — pásalo de uno en uno");
+    modal({
+      emoji:"🎲", title:"¡Sorteo listo!",
+      text:"Ahora <b>pasa el dispositivo</b>: cada jugador toca <b>su personaje</b>, confirma quién es, ve su amigo secreto y lo guarda con el botón 🔒.",
+      actions:[{label:"¡A jugar! 🎮", cls:"btn-start", fn:closeModal}]
+    });
+  };
+  if(state.claimed.length){
+    modal({
+      emoji:"⚠️", title:"Re-sortear",
+      text:`Esto borrará los <b>${state.claimed.length}</b> secretos ya reclamados y hará un sorteo nuevo.<br>¿Seguro?`,
+      actions:[
+        {label:"Sí, re-sortear", cls:"btn-start", fn:()=>{ closeModal(); doDraw(); }},
+        {label:"Cancelar", cls:"btn-g", fn:closeModal}
+      ]
+    });
+  } else doDraw();
+});
+
+/* 🔗 Copiar enlace de invitación */
+$("btnInvite").addEventListener("click", copiarEnlace);
+
+/* 🔑 Desbloquear el roster con el código del organizador */
+$("btnUnlockRoster").addEventListener("click", ()=>{
+  pedirCodigo({
+    title:"Soy organizador",
+    text:"Ingresa el código para desbloquear el roster de la sala.",
+    accion:()=>{ organizerUnlocked = true; updatePauseLock(); achievement("🔑 Organizador desbloqueado"); }
+  });
+});
+
+$("btnReset").addEventListener("click", ()=>{
+  pedirCodigo({
+    emoji:"🔑",
+    title:"Reiniciar sorteo",
+    text: isCloud()
+      ? "Se borrará el sorteo <b>en la sala para todos los participantes</b>."
+      : "Se borrará el sorteo de este dispositivo.",
+    accion: aplicarReset
+  });
+});
+
+$("btnCopy").addEventListener("click", async ()=>{
+  const asg = getAssign();
+  const keys = Object.keys(asg);
+  if(!keys.length){ toast("Aún no hay resultados que copiar"); return; }
+  if(state.claimed.length < state.names.length){ toast("Faltan jugadores por reclamar 🔒"); return; }
+  const txt = "🎁 AMIGO SECRETO — Six Seven Edition 🎁\n\n" +
+    keys.map(k=>`${k} → ${asg[k]}`).join("\n") +
+    "\n\nLLLEGA A TU LÍMITE... ¡MÁS! 🔥";
+  try{ await navigator.clipboard.writeText(txt); achievement("📋 Chismoso digital — resultado copiado"); }
+  catch(e){ toast("No se pudo copiar 😔"); }
+});
+
+$("btnApply").addEventListener("click", ()=>{
+  const list = $("namesBox").value.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean);
+  const uniq = [...new Set(list)];
+  if(uniq.length < 2){ toast("Escribe al menos 2 nombres"); return; }
+  if(isCloud()){
+    FS.updateDoc(roomRef, { names: uniq, assignEnc:"", reclamado:{}, actualizadoEn: FS.serverTimestamp() })
+      .then(()=>{ celebrated = false; achievement(`✅ Roster actualizado en la sala — ${uniq.length} jugadores`); })
+      .catch(()=> toast("❌ No se pudo actualizar la sala"));
+    return;
+  }
+  state.names = uniq; state.assignEnc = ""; state.claimed = []; celebrated = false;
+  openCard = null; $("lockbar").classList.remove("show");
+  save(); render(); achievement(`✅ Roster actualizado — ${uniq.length} jugadores`);
+});
+
+$("btnShuffleNames").addEventListener("click", ()=>{
+  if(openCard){ toast("🔒 Guarda tu secreto antes de mezclar"); return; }
+  if(isCloud()){
+    FS.updateDoc(roomRef, { names: shuffle(state.names), actualizadoEn: FS.serverTimestamp() })
+      .then(()=> toast("🔀 Orden mezclado para la sala"))
+      .catch(()=> toast("❌ No se pudo mezclar en la sala"));
+    return;
+  }
+  state.names = shuffle(state.names);
+  $("namesBox").value = state.names.join("\n");
+  save(); render(); toast("🔀 Orden mezclado — ¡que empiece la locura!");
+});
+
+$("chk67").addEventListener("change", e=>{
+  state.six7 = e.target.checked;
+  document.body.classList.toggle("six7", state.six7);
+  $("modeBadge").style.borderColor = state.six7 ? "#ff5e00" : "#ffcf3d";
+  $("modeBadge").style.boxShadow = state.six7 ? "0 0 34px #ff5e00, 0 0 60px #ff2e6388" : "0 0 24px #ffb30088";
+  save();
+  if(state.six7){ achievement("😈 SIX SEVEN MODE ACTIVADO"); bigConfetti(); }
+  else toast("Six Seven Mode apagado");
+});
+
+/* ══════════ CONFETI ══════════ */
+const cv = $("fx"), ctx = cv.getContext("2d");
+let parts = [];
+function resize(){ cv.width = innerWidth; cv.height = innerHeight; }
+addEventListener("resize", resize); resize();
+
+const COLORS_CONF = ["#ffd166","#ff4d94","#4ee6c1","#9d6bff","#3fb6ff","#ffffff","#ff7a00","#9BF00B"];
+function burst(el, amount=48){
+  const r = el.getBoundingClientRect();
+  spawn(r.left + r.width/2, r.top + r.height/2, amount);
+}
+function bigConfetti(){ spawn(innerWidth/2, innerHeight*0.32, state.six7 ? 320 : 220); }
+function spawn(x,y,amount){
+  for(let i=0;i<amount;i++){
+    parts.push({
+      x,y, vx:(Math.random()-.5)*13, vy:Math.random()*-13-2,
+      g:.32+Math.random()*.2, s:5+Math.random()*7,
+      c:COLORS_CONF[Math.floor(Math.random()*COLORS_CONF.length)],
+      rot:Math.random()*Math.PI, vr:(Math.random()-.5)*.3, life:1
+    });
+  }
+}
+function loop(){
+  ctx.clearRect(0,0,cv.width,cv.height);
+  parts = parts.filter(p=>p.life>0 && p.y < cv.height+60);
+  for(const p of parts){
+    p.vy += p.g; p.x += p.vx; p.y += p.vy; p.vx *= .99;
+    p.rot += p.vr; p.life -= .004;
+    ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+    ctx.globalAlpha = Math.max(0,Math.min(1,p.life*1.6));
+    ctx.fillStyle = p.c; ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);
+    ctx.restore();
+  }
+  requestAnimationFrame(loop);
+}
+loop();
+
+/* ══════════ SONIDO ══════════ */
+let actx;
+function chime(big=false){
+  try{
+    actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+    (big ? [523.25,659.25,783.99,1046.5] : [659.25,783.99]).forEach((f,i)=>{
+      const o = actx.createOscillator(), g = actx.createGain();
+      o.type="triangle"; o.frequency.value=f; o.connect(g); g.connect(actx.destination);
+      const t = actx.currentTime + i*.09;
+      g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(.16,t+.02);
+      g.gain.exponentialRampToValueAtTime(.0001,t+.5);
+      o.start(t); o.stop(t+.55);
+    });
+  }catch(e){}
+}
+function achSound(){
+  try{
+    actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+    [659.25,880,1174.66].forEach((f,i)=>{
+      const o = actx.createOscillator(), g = actx.createGain();
+      o.type="square"; o.frequency.value=f; o.connect(g); g.connect(actx.destination);
+      const t = actx.currentTime + i*.08;
+      g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(.09,t+.02);
+      g.gain.exponentialRampToValueAtTime(.0001,t+.42);
+      o.start(t); o.stop(t+.45);
+    });
+  }catch(e){}
+}
+
+/* ══════════ INICIO ══════════ */
+$("namesBox").value = state.names.join("\n");
+document.body.classList.toggle("six7", !!state.six7);
+$("chk67").checked = !!state.six7;
+render();
+updatePauseLock();
+if(state.claimed.length && !SALA_INICIAL) setTimeout(()=>toast(`👋 ${state.claimed.length} de ${state.names.length} ya reclamaron su secreto`), 600);
+checkAllClaimed(true);
+
+/* ── Conexión con Firebase (import dinámico: si falla, sigue el modo local) ── */
+if(CONFIG_OK){
+  try{
+    const { initializeApp } = await import("firebase/app");
+    const F = await import("firebase/firestore");
+    const app = initializeApp(firebaseConfig);
+    FS = {
+      getFirestore: F.getFirestore, doc: F.doc, onSnapshot: F.onSnapshot,
+      setDoc: F.setDoc, updateDoc: F.updateDoc, serverTimestamp: F.serverTimestamp
+    };
+    db = FS.getFirestore(app);
+    if(SALA_INICIAL){
+      conectar(FS.doc(db, "salas", SALA_INICIAL), SALA_INICIAL, false);
+    }
+  }catch(e){
+    console.warn("Firebase no disponible:", e);
+    toast("⚠️ Firebase no disponible — modo local activado");
+  }
+}else{
+  if(SALA_INICIAL) toast("🔧 Pega tu firebaseConfig para unirte a la sala");
+  else setTimeout(()=>toast("🔧 Modo local — pega tu firebaseConfig para jugar online por enlace"), 2600);
+}
+
+/* 🛠️ hook de depuración / pruebas */
+window.__amigo = {
+  state,
+  isCloud, handleRoomData, crearSala, aplicarReset,
+  room: ()=>roomId,
+  FS: ()=>FS,
+  setFS: fs=>{ FS = fs; },
+  setOrg: v=>{ organizerUnlocked = !!v; updatePauseLock(); },
+  unlock: ()=>{ organizerUnlocked = true; updatePauseLock(); },
+  conectarMock:(id, fs)=>{
+    if(fs) FS = fs;
+    roomRef = { id }; roomId = id; roomMode = true; organizerUnlocked = true;
+    document.body.classList.add("en-sala");
+    $("salaIdTxt").textContent = id;
+    $("btnInvite").disabled = false;
+    updatePauseLock();
+  }
+};
+</script>
+</body>
+</html>
