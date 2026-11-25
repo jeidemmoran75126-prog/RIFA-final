@@ -1,0 +1,549 @@
+/* ==========================================================
+   ESCAPA DE LABURAR - estilos
+   Secciones:
+   1. Colores y base
+   2. Fondo de la página
+   3. Panel superior (puntos, combo, palas)
+   4. Zona de juego y pantallas
+   5. Botones y pie
+   6. Pantalla final (nombre)
+   7. Clasificación
+   8. Tienda
+   9. Pantallas anchas (paneles a los lados)
+   ========================================================== */
+
+
+/* ---------- 1. Colores y base ---------- */
+
+:root {
+  color-scheme: dark;
+
+  --bg: #10151f;
+  --panel: #18202c;
+  --line: #2e3a4d;
+  --txt: #f3f4f6;
+  --mute: #94a3b8;
+  --gold: #eab308;
+  --blue: #38bdf8;
+  --red: #c81e1e;
+  --btn: #1d4ed8;
+
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+html {
+  background: #0b1220;
+}
+
+body {
+  background: transparent;
+  color: var(--txt);
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 460px;
+  max-width: 100%;
+}
+
+h1 {
+  font-size: 28px;
+  color: var(--gold);
+}
+
+p {
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+
+/* ---------- 2. Fondo de la página (ciudad) ---------- */
+
+#city {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+
+/* ---------- 3. Panel superior (puntos, combo, palas) ---------- */
+
+.bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 14px;
+}
+
+.lbl {
+  font-size: 12px;
+  color: var(--mute);
+  display: block;
+}
+
+.val {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* Cartel del combo (x1, x2... x32) */
+#combo {
+  background: var(--red);
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  transition: transform 0.1s;
+}
+
+#combo.pop {
+  transform: scale(1.2);
+}
+
+/* Espacios de las palas guardadas */
+.slots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.slot {
+  width: 40px;
+  height: 40px;
+  border: 1px dashed #64748b;
+  border-radius: 6px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.slot.full {
+  border: 1px solid var(--gold);
+  background: #2a2410;
+}
+
+#use {
+  background: var(--gold);
+  color: #1a1400;
+  border: 0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+#use.on {
+  opacity: 1;
+}
+
+#use:focus-visible,
+button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+
+/* ---------- 4. Zona de juego y pantallas ---------- */
+
+.wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 460 / 540;
+  max-height: 68vh;
+  margin: 0 auto;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0d131d;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+/* Pantallas encima del juego (inicio, final, pausa) */
+.ov {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 19, 29, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  gap: 14px;
+}
+
+.ov.hidden {
+  display: none;
+}
+
+.how {
+  font-size: 13px;
+  color: var(--mute);
+  max-width: 340px;
+}
+
+
+/* ---------- 5. Botones y pie ---------- */
+
+.btn {
+  background: var(--btn);
+  color: #fff;
+  border: 0;
+  padding: 12px 28px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #1e40af;
+}
+
+.foot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #64748b;
+}
+
+#mute {
+  background: none;
+  border: 0;
+  color: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+
+/* ---------- 6. Pantalla final (nombre) ---------- */
+
+#nameRow {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  max-width: 300px;
+}
+
+#nameRow .btn {
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+#nameIn {
+  flex: 1;
+  min-width: 0;
+  background: #0d131d;
+  color: var(--txt);
+  border: 1px solid #475569;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 15px;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+#saveMsg {
+  min-height: 20px;
+  font-size: 13px;
+}
+
+
+/* ---------- 7. Clasificación ---------- */
+
+.board {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.board h2 {
+  font-size: 15px;
+  color: var(--gold);
+  margin-bottom: 2px;
+}
+
+#rankSrc {
+  font-size: 12px;
+  color: var(--mute);
+  margin-bottom: 6px;
+}
+
+#rank {
+  list-style: none;
+}
+
+#rank li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 14px;
+  padding: 5px 0;
+  border-top: 1px solid var(--line);
+}
+
+/* Los tres primeros en dorado */
+#rank li:nth-child(-n + 3) {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+#rank .nm {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#rank .empty {
+  color: var(--mute);
+  font-weight: 400;
+}
+
+#rank .pts {
+  white-space: nowrap;
+}
+
+
+/* ---------- 8. Tienda ---------- */
+
+.shop {
+  background: linear-gradient(160deg, rgba(44, 34, 10, 0.96), rgba(24, 32, 44, 0.96) 55%);
+  border: 1px solid #6b5a1e;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.shophead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.shop h2 {
+  font-size: 18px;
+  color: var(--gold);
+}
+
+/* Cuántos Veritys tienes */
+.wallet {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #0d131d;
+  border: 1px solid #6b5a1e;
+  border-radius: 999px;
+  padding: 4px 12px 4px 6px;
+  font-size: 15px;
+}
+
+/* Carita Verity pequeña */
+.vf {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+
+.card {
+  background: rgba(13, 19, 29, 0.7);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.card b {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+
+.card span {
+  display: block;
+  font-size: 12px;
+  color: var(--mute);
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+/* Vista previa del rectángulo */
+.prev {
+  display: flex;
+  justify-content: center;
+  padding: 14px 0;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: repeating-linear-gradient(45deg, #111826, #111826 8px, #0f1521 8px, #0f1521 16px);
+}
+
+.prevbox {
+  width: 92px;
+  height: 44px;
+  border-radius: 12px;
+  background: #38bdf8 center / cover no-repeat;
+  position: relative;
+}
+
+.prevbox:not(.skinned)::after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 10px;
+  height: 10px;
+  background: #f8fafc;
+  border-radius: 2px;
+}
+
+/* Separación entre las tarjetas de la tienda */
+.card + .card {
+  margin-top: 12px;
+}
+
+/* Vista previa del fondo de atrás */
+.prevbg {
+  width: 120px;
+  height: 64px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, #0b1220, #1c2638) center / cover no-repeat;
+}
+
+/* Barra de progreso hacia los Veritys */
+.prog {
+  height: 6px;
+  border-radius: 3px;
+  background: #1f2a3d;
+  overflow: hidden;
+}
+
+.prog i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #eab308, #facc15);
+  transition: width 0.3s;
+}
+
+#progTxt,
+#bgProgTxt {
+  margin: 6px 0 10px;
+}
+
+#buyBtn,
+#bgBuyBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #a16207;
+  padding: 10px;
+  font-size: 14px;
+}
+
+#buyBtn:hover,
+#bgBuyBtn:hover {
+  background: #854d0e;
+}
+
+#buyBtn:disabled,
+#bgBuyBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Botones de la imagen (después de comprar) */
+#skinCtl,
+#bgCtl {
+  display: none;
+  gap: 8px;
+}
+
+.up {
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  padding: 10px 8px;
+  cursor: pointer;
+}
+
+#clrBtn,
+#bgClrBtn {
+  background: none;
+  border: 1px solid #475569;
+  color: var(--txt);
+  border-radius: 6px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+#shopMsg {
+  font-size: 12px;
+  margin-top: 10px;
+  min-height: 16px;
+  color: var(--gold);
+}
+
+
+/* ---------- 9. Pantallas anchas ---------- */
+
+/* Tienda a la izquierda y clasificación a la derecha */
+@media (min-width: 920px) {
+  .shop,
+  .board {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(190px, calc((100vw - 460px) / 2 - 40px), 270px);
+    max-height: 90vh;
+    overflow: auto;
+  }
+
+  .board {
+    right: 20px;
+    background: rgba(24, 32, 44, 0.94);
+  }
+
+  .shop {
+    left: 20px;
+  }
+}
